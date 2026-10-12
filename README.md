@@ -72,6 +72,8 @@ The Worker does not send email or return the stored HTML to the browser. A separ
 
 ## Checks
 
+The GitHub Actions `Test` workflow runs on pushes and pull requests targeting `main`. It checks TypeScript, runs the test suite, builds the frontend, and validates the Worker bundle without deploying either application.
+
 ```sh
 npm run typecheck
 npm test
