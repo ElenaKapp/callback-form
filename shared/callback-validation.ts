@@ -117,13 +117,23 @@ export function validateCallbackRequest(input: unknown): ValidationResult {
     }
   } else if (existingCustomer === false) {
     firstName = normalizedText(input.firstName);
-    if (firstName === null || firstName.length === 0 || !isWithinLength(firstName, 80)) {
-      errors.firstName = "Bitte geben Sie Ihren Vornamen ein (maximal 80 Zeichen).";
+    if (
+      firstName === null ||
+      firstName.length === 0 ||
+      /\p{N}/u.test(firstName) ||
+      !isWithinLength(firstName, 80)
+    ) {
+      errors.firstName = "Bitte geben Sie Ihren Vornamen ohne Zahlen ein (maximal 80 Zeichen).";
     }
 
     lastName = normalizedText(input.lastName);
-    if (lastName === null || lastName.length === 0 || !isWithinLength(lastName, 80)) {
-      errors.lastName = "Bitte geben Sie Ihren Nachnamen ein (maximal 80 Zeichen).";
+    if (
+      lastName === null ||
+      lastName.length === 0 ||
+      /\p{N}/u.test(lastName) ||
+      !isWithinLength(lastName, 80)
+    ) {
+      errors.lastName = "Bitte geben Sie Ihren Nachnamen ohne Zahlen ein (maximal 80 Zeichen).";
     }
 
     postalCode = normalizedText(input.postalCode);

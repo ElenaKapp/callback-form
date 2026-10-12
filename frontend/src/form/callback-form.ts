@@ -121,6 +121,21 @@ export function initializeCallbackForm(): void {
     return result.ok;
   }
 
+  function removeDigits(control: HTMLInputElement): void {
+    const value = control.value;
+    const selectionStart = control.selectionStart;
+    const cleanedValue = value.replace(/\p{N}/gu, "");
+    if (value === cleanedValue) {
+      return;
+    }
+
+    const cursorPosition = selectionStart === null
+      ? cleanedValue.length
+      : value.slice(0, selectionStart).replace(/\p{N}/gu, "").length;
+    control.value = cleanedValue;
+    control.setSelectionRange(cursorPosition, cursorPosition);
+  }
+
   function updateCustomerFields(selected: string): void {
     const isExisting = selected === "yes";
     existingFields.hidden = !isExisting;
@@ -167,11 +182,28 @@ export function initializeCallbackForm(): void {
         touchedFields.add(field);
         validateAndRender(getPayload());
       });
-      fieldControl.addEventListener("input", () => {
+      fieldControl.addEventListener("input", (event) => {
+        if (
+          (field === "firstName" || field === "lastName") &&
+          fieldControl instanceof HTMLInputElement &&
+          !(event instanceof InputEvent && event.isComposing)
+        ) {
+          removeDigits(fieldControl);
+        }
         if (touchedFields.has(field) || submitAttempted) {
           validateAndRender(getPayload());
         }
       });
+      if (field === "firstName" || field === "lastName") {
+        fieldControl.addEventListener("compositionend", () => {
+          if (fieldControl instanceof HTMLInputElement) {
+            removeDigits(fieldControl);
+          }
+          if (touchedFields.has(field) || submitAttempted) {
+            validateAndRender(getPayload());
+          }
+        });
+      }
       fieldControl.addEventListener("change", () => {
         if (touchedFields.has(field) || submitAttempted) {
           validateAndRender(getPayload());

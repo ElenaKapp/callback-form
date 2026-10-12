@@ -217,6 +217,19 @@ describe("callback request worker", () => {
     expect(response.status).toBe(400);
   });
 
+  it.each([
+    ["firstName", "Mara123"],
+    ["lastName", "Beispiel7"],
+    ["firstName", "Mara١٢٣"],
+  ])("rejects numbers in %s", async (field, value) => {
+    const response = await worker.fetch(
+      request(newCustomerRequest({ [field]: value })),
+      createEnv(),
+    );
+
+    expect(response.status).toBe(400);
+  });
+
   it("rejects an invalid product and an unapproved extra field", async () => {
     const invalidProduct = await worker.fetch(
       request(newCustomerRequest({ products: ["unlisted-product"] })),

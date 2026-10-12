@@ -127,10 +127,23 @@ describe("callback form", () => {
     firstName.dispatchEvent(new Event("blur"));
 
     expect(control<HTMLElement>("firstName-error").textContent).toBe(
-      "Bitte geben Sie Ihren Vornamen ein (maximal 80 Zeichen).",
+      "Bitte geben Sie Ihren Vornamen ohne Zahlen ein (maximal 80 Zeichen).",
     );
     expect(firstName.getAttribute("aria-invalid")).toBe("true");
     expect(firstName.getAttribute("aria-describedby")).toContain("firstName-error");
+  });
+
+  it.each(["firstName", "lastName"])("removes numbers typed or pasted into %s", (field) => {
+    chooseCustomerStatus("no");
+    const nameInput = control<HTMLInputElement>(field);
+
+    nameInput.value = "Ma12ra٣";
+    nameInput.setSelectionRange(nameInput.value.length, nameInput.value.length);
+    nameInput.dispatchEvent(
+      new InputEvent("input", { bubbles: true, inputType: "insertFromPaste" }),
+    );
+
+    expect(nameInput.value).toBe("Mara");
   });
 
   it("focuses the first invalid field and does not send an invalid request", () => {
