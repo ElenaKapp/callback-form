@@ -9,7 +9,7 @@ A framework-free full-stack application with independently deployable frontend a
 frontend/          HTML, SCSS, browser TypeScript, Vite, and GitHub Pages build
 backend/           Cloudflare Worker API, R2 binding, and API tests
 shared/            Explicit JSON contract and pure business validation
-.github/workflows/ GitHub Pages deployment
+.github/workflows/ GitHub Pages and Cloudflare Worker workflows
 ```
 
 The frontend and backend are built and deployed separately. `shared/callback-request.ts` contains the shared request types and allowed-value constants; `shared/callback-validation.ts` contains the pure validation and normalization logic used by both the browser and Worker. The Worker remains the security boundary and validates every request again.
@@ -45,20 +45,22 @@ The `.github/workflows/deploy-pages.yml` workflow builds and deploys only `front
 
 The workflow intentionally fails if the API origin is missing rather than publishing a site with a non-functional form. It builds with the project path `/callback-form/` and adjusts that path automatically if the repository is renamed.
 
-## Cloudflare Worker and R2: backend
+## Backend request flow
 
-The backend and R2 are deployed independently from Pages. With Cloudflare authentication and the npm dependencies installed:
+The backend is a Cloudflare Worker with a single endpoint, `POST /api/callback-requests`. The Pages frontend sends JSON to the Worker origin configured at build time with `VITE_API_BASE_URL`; it does not send requests to the Pages host. The Worker uses the `CALLBACK_REQUESTS` R2 binding for persistence. `FRONTEND_ORIGIN` in `backend/wrangler.toml` is the one allowed browser origin (`https://elenakapp.github.io` by default).
 
-```sh
-npx wrangler r2 bucket create callback-requests
-npx wrangler r2 bucket create callback-requests-preview
-npm run build:backend
-npm run deploy:backend
-```
+For each request, the Worker:
 
-The `FRONTEND_ORIGIN` allowlist in `backend/wrangler.toml` is set to `https://elenakapp.github.io`. If using a custom domain, change it to the exact origin (scheme and host, without a path). The Pages path `/online-tariff-calculator/` is not part of the origin. The `VITE_API_BASE_URL` GitHub Actions variable must point to the deployed Worker origin.
+1. Requires the request path to match `/api/callback-requests` and the `Origin` header to match `FRONTEND_ORIGIN`. A request from a different or missing origin is rejected with `403`.
+2. Handles CORS preflight requests with `OPTIONS` only for the allowed origin, a requested `POST` method, and no requested header other than `Content-Type`. It permits no credentials.
+3. Accepts only `POST` (other methods receive `405`) and `Content-Type: application/json` (otherwise `415`).
+4. Reads at most 16 KiB of UTF-8 JSON. Oversized bodies receive `413`; missing, malformed, or unreadable JSON receives `400`.
+5. Validates the untrusted JSON using the shared `validateCallbackRequest` rules. The top-level value must be an object containing only recognized fields. Text is Unicode-normalized (NFC), trimmed, and whitespace-collapsed; control characters are rejected. Phone numbers are limited to 30 characters and 6–15 digits. Callback time must be `morning` or `afternoon`; `products` must contain one or more unique values from `car`, `home`, `liability`, `legal`, `health`, and `other`.
+6. Enforces the customer-data branch on the server. With `existingCustomer: true`, a 4–32 character customer number is required; personal details from the other branch are omitted from the normalized data. With `existingCustomer: false`, first name (1–80 characters), last name (1–80), five-digit postal code, city (1–100), and valid email (up to 254) are required; occupation (up to 100) and employer (up to 120) are optional. Email is lowercased. Both branches also require a valid phone number, callback time, at least one product, and `privacyConsent: true`. Invalid requests receive `400`; unknown fields are rejected rather than silently persisted.
+7. Builds a new, explicitly selected `CallbackRequest` object rather than storing the raw request. It generates a random UUID, escapes user-supplied text for HTML, and renders a complete German-language HTML document with a restrictive Content Security Policy.
+8. Writes the document to the private R2 bucket using the key `callback-requests/{UUID}.html` and content type `text/html; charset=utf-8`. User input never influences the object key. A storage failure returns `503`; success returns `202` with only `{ "status": "accepted" }`.
 
-`POST /api/callback-requests` accepts JSON up to 16 KiB, handles CORS preflight requests only for the configured frontend origin, and returns HTTP 202 with `{ "status": "accepted" }` after a successful write. The request explicitly states whether the caller is an existing customer using the `existingCustomer` field. Existing customers must provide a customer number and the general callback details; otherwise, first name, last name, postal code, city, and email are required, while occupation and employer are optional. All callers may select multiple insurance lines from a fixed server-validated list. Fields from the other customer-data branch are discarded, and unknown fields are rejected. Privacy consent must be `true` on the server. Objects use the key pattern `callback-requests/{UUID}.html`; user input is never used in the filename.
+The Worker does not send email or return the stored HTML to the browser. A separate downstream service is expected to retrieve the HTML files from R2 and process them; that service is outside this application.
 
 ## Security and privacy
 
