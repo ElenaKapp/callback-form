@@ -1,0 +1,423 @@
+@use "tokens" as *;
+
+h2 {
+  font-family: "Aptos Display", "Segoe UI", Arial, sans-serif;
+}
+
+.request-section {
+  width: min(790px, calc(100% - 36px));
+  margin: 37px auto 65px;
+}
+
+.form-intro {
+  margin-bottom: 27px;
+}
+
+.step-label {
+  margin: 0 0 9px;
+  color: $color-brand;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.step-label span {
+  padding: 0 5px;
+  color: $color-step-muted;
+}
+
+h2 {
+  margin: 0;
+  color: $color-ink;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+}
+
+.form-intro > p:last-child {
+  margin: 9px 0 0;
+  color: $color-muted;
+  font-size: 13px;
+}
+
+.required-mark {
+  color: $color-error;
+  font-weight: 700;
+}
+
+.form-step {
+  min-width: 0;
+  margin: 0;
+  padding: 22px 0;
+  border: 0;
+  border-top: 1px solid $color-border;
+}
+
+.form-step legend {
+  float: left;
+  width: 100%;
+  margin: 0 0 15px;
+  padding: 0;
+  color: $color-ink;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.form-step legend + * {
+  clear: both;
+}
+
+.step-number {
+  display: inline-grid;
+  width: 25px;
+  height: 25px;
+  margin-right: 8px;
+  place-items: center;
+  border-radius: 50%;
+  background: $color-brand-soft;
+  color: $color-brand;
+  font-size: 12px;
+  vertical-align: -1px;
+}
+
+.choice-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.choice-card {
+  position: relative;
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+  background: $color-white;
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.choice-card:has(input:checked) {
+  border-color: $color-brand;
+  background: $color-selected;
+}
+
+.choice-card:has(input:focus-visible) {
+  outline: 3px solid $color-focus;
+  outline-offset: 2px;
+}
+
+.choice-card input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.choice-indicator {
+  display: grid;
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  place-items: center;
+  border: 1.5px solid $color-step-muted;
+  border-radius: 50%;
+}
+
+.choice-card input:checked + .choice-indicator {
+  border-color: $color-brand;
+}
+
+.choice-card input:checked + .choice-indicator::after {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: $color-brand;
+  content: "";
+}
+
+.choice-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.choice-copy strong {
+  color: $color-ink;
+  font-size: 13px;
+}
+
+.choice-copy span {
+  color: $color-muted;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.optional-label {
+  color: $color-muted;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.product-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.product-option {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 13px;
+  border: 1px solid $color-border;
+  border-radius: 5px;
+  background: $color-white;
+  color: $color-text;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.product-option:has(input:checked) {
+  border-color: $color-brand;
+  background: $color-selected;
+}
+
+.product-option:has(input:focus-visible) {
+  outline: 3px solid $color-focus;
+  outline-offset: 2px;
+}
+
+.product-option input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin: 0;
+  accent-color: $color-brand;
+}
+
+.product-option input[aria-invalid="true"] {
+  outline: 1px solid $color-error;
+}
+
+.product-option:has(input[aria-invalid="true"]) {
+  border-color: $color-error;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.field-wide {
+  grid-column: auto;
+}
+
+.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.field label,
+.privacy-consent label {
+  margin-bottom: 7px;
+  color: $color-text;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 45px;
+  padding: 10px 12px;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+  background-color: $color-white;
+  color: $color-ink;
+  font: inherit;
+  font-size: 13px;
+}
+
+.field select {
+  cursor: pointer;
+}
+
+.field input[aria-invalid="true"],
+.field select[aria-invalid="true"] {
+  border-color: $color-error;
+}
+
+.field-hint {
+  margin-top: 6px;
+  color: $color-muted;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.field-error {
+  min-height: 0;
+  margin: 0;
+  color: $color-error;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.field-error:not(:empty) {
+  margin-top: 6px;
+}
+
+.choice-error:not(:empty) {
+  margin-top: 9px;
+}
+
+.privacy-consent {
+  position: relative;
+  display: grid;
+  grid-template-columns: 19px 1fr;
+  align-items: start;
+  column-gap: 11px;
+  padding: 20px 0 22px;
+  border-top: 1px solid $color-border;
+}
+
+.privacy-consent input {
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: $color-brand;
+}
+
+.privacy-consent input[aria-invalid="true"] {
+  outline: 1px solid $color-error;
+}
+
+.privacy-consent label {
+  margin: 0;
+  color: $color-muted;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.privacy-consent > .field-error {
+  grid-column: 2;
+}
+
+.form-footer {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.submit-button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 21px;
+  border: 0;
+  border-radius: 4px;
+  background: $color-brand;
+  color: $color-white;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: $color-brand-dark;
+}
+
+.submit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.submit-button span {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.form-note {
+  margin: 0;
+  color: $color-muted;
+  font-size: 11px;
+}
+
+.lock-icon {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 8px;
+  margin: 0 3px 0 1px;
+  border: 1px solid $color-muted;
+  border-radius: 2px;
+  vertical-align: -1px;
+}
+
+.lock-icon::before {
+  position: absolute;
+  top: -6px;
+  left: 2px;
+  width: 4px;
+  height: 5px;
+  border: 1px solid $color-muted;
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  content: "";
+}
+
+.form-status {
+  display: none;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.form-status {
+  &.success,
+  &.error {
+    display: block;
+  }
+
+  &.success {
+    border: 1px solid $color-brand-soft;
+    background: $color-selected;
+    color: $color-brand-dark;
+  }
+
+  &.error {
+    border: 1px solid $color-error-border;
+    background: $color-error-background;
+    color: $color-error;
+  }
+}
+
+@media (min-width: $tablet-breakpoint) {
+  .choice-options,
+  .field-grid,
+  .product-options {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .field-grid {
+    gap: 16px 20px;
+  }
+
+  .field-wide {
+    grid-column: 1 / -1;
+  }
+}

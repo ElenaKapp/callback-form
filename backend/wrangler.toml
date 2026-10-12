@@ -1,0 +1,11 @@
+name = "callback-form"
+main = "worker/index.ts"
+compatibility_date = "2026-10-12"
+
+[[r2_buckets]]
+binding = "CALLBACK_REQUESTS"
+bucket_name = "callback-requests"
+preview_bucket_name = "callback-requests-preview"
+
+[vars]
+FRONTEND_ORIGIN = "https://elenakapp.github.io"

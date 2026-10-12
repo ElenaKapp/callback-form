@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8f6" />
+    <meta
+      name="description"
+      content="Wir beraten Sie persönlich zu Ihrem Versicherungsschutz. Vereinbaren Sie einen Rückruf."
+    />
+    <title>Rückruf vereinbaren | DEVK</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="%BASE_URL%" aria-label="DEVK – Startseite">
+        <span class="brand-mark" aria-hidden="true">DEVK</span>
+        <span class="brand-divider" aria-hidden="true"></span>
+        <span class="brand-label">Persönlich für Sie da</span>
+      </a>
+      <div class="header-phone">
+        <span class="phone-icon" aria-hidden="true">☎</span>
+        <span>Wir beraten Sie gern</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-content">
+          <p class="eyebrow"><span aria-hidden="true"></span> Persönliche Beratung</p>
+          <h1 id="page-title">Wir rufen Sie gern zurück.</h1>
+          <p class="hero-copy">
+            Sie haben Fragen zu Ihrem Versicherungsschutz? Hinterlassen Sie uns Ihre
+            Kontaktdaten – wir melden uns zum gewünschten Zeitpunkt bei Ihnen.
+          </p>
+          <p class="privacy-promise">
+            <span class="shield-icon" aria-hidden="true">✓</span>
+            Ihre Angaben behandeln wir vertraulich.
+          </p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-sun"></div>
+          <div class="art-arch"></div>
+          <div class="art-house">
+            <div class="house-roof"></div>
+            <div class="house-body">
+              <span class="house-window"></span>
+              <span class="house-door"></span>
+            </div>
+          </div>
+          <div class="art-ground"></div>
+          <div class="art-plant"><span></span><span></span><span></span></div>
+        </div>
+      </section>
+
+      <section class="request-section" aria-labelledby="form-title">
+        <div class="form-intro">
+          <p class="step-label">Rückruf anfordern <span>·</span> ca. 1 Minute</p>
+          <h2 id="form-title">Wie können wir Sie erreichen?</h2>
+          <p>Füllen Sie bitte die Felder aus. Die mit <span class="required-mark">*</span> markierten Angaben sind erforderlich.</p>
+        </div>
+
+        <form id="callback-form" novalidate>
+          <fieldset class="form-step" id="customer-choice">
+            <legend><span class="step-number">1</span> Sind Sie bereits Kunde der DEVK?</legend>
+            <div class="choice-options">
+              <label class="choice-card">
+                <input type="radio" name="existingCustomer" value="yes" required />
+                <span class="choice-indicator" aria-hidden="true"></span>
+                <span class="choice-copy"><strong>Ja</strong><span>Ich habe meine Kundennummer zur Hand.</span></span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="existingCustomer" value="no" required />
+                <span class="choice-indicator" aria-hidden="true"></span>
+                <span class="choice-copy"><strong>Nein</strong><span>Ich habe keine Kundennummer zur Hand.</span></span>
+              </label>
+            </div>
+            <p class="field-error choice-error" id="existingCustomer-error" aria-live="polite"></p>
+          </fieldset>
+
+          <fieldset class="form-step conditional-step" id="existing-customer-fields" hidden>
+            <legend><span class="step-number">2</span> Wie lautet Ihre Kundennummer?</legend>
+            <div class="field">
+              <label for="customerNumber">Kundennummer <span class="required-mark">*</span></label>
+              <input id="customerNumber" name="customerNumber" type="text" autocomplete="off" maxlength="32" aria-describedby="customerNumber-hint customerNumber-error" />
+              <span class="field-hint" id="customerNumber-hint">Sie finden Ihre Kundennummer auf Ihren Vertragsunterlagen.</span>
+              <p class="field-error" id="customerNumber-error" aria-live="polite"></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-step conditional-step" id="new-customer-fields" hidden>
+            <legend><span class="step-number">2</span> Ihre persönlichen Daten</legend>
+            <div class="field-grid">
+              <div class="field">
+                <label for="firstName">Vorname <span class="required-mark">*</span></label>
+                <input id="firstName" name="firstName" type="text" autocomplete="given-name" maxlength="80" />
+                <p class="field-error" id="firstName-error" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="lastName">Nachname <span class="required-mark">*</span></label>
+                <input id="lastName" name="lastName" type="text" autocomplete="family-name" maxlength="80" />
+                <p class="field-error" id="lastName-error" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="postalCode">PLZ <span class="required-mark">*</span></label>
+                <input id="postalCode" name="postalCode" type="text" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" />
+                <p class="field-error" id="postalCode-error" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="city">Wohnort <span class="required-mark">*</span></label>
+                <input id="city" name="city" type="text" autocomplete="address-level2" maxlength="100" />
+                <p class="field-error" id="city-error" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="occupation">Beruf <span class="optional-label">(optional)</span></label>
+                <input id="occupation" name="occupation" type="text" autocomplete="organization-title" maxlength="100" />
+                <p class="field-error" id="occupation-error" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="employer">Arbeitgeber <span class="optional-label">(optional)</span></label>
+                <input id="employer" name="employer" type="text" autocomplete="organization" maxlength="120" />
+                <p class="field-error" id="employer-error" aria-live="polite"></p>
+              </div>
+              <div class="field field-wide">
+                <label for="email">E-Mail-Adresse <span class="required-mark">*</span></label>
+                <input id="email" name="email" type="email" autocomplete="email" maxlength="254" />
+                <p class="field-error" id="email-error" aria-live="polite"></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-step" id="callback-details">
+            <legend><span class="step-number">3</span> Ihr gewünschter Rückruf</legend>
+            <div class="field-grid">
+              <div class="field">
+                <label for="phone">Telefonnummer <span class="required-mark">*</span></label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" aria-describedby="phone-hint phone-error" required />
+                <span class="field-hint" id="phone-hint">Unter dieser Nummer erreichen wir Sie.</span>
+                <p class="field-error" id="phone-error" aria-live="polite"></p>
+              </div>
+              <div class="field field-wide">
+                <label for="callbackTime">Wann sollen wir Sie kontaktieren? <span class="required-mark">*</span></label>
+                <select id="callbackTime" name="callbackTime" required>
+                  <option value="">Bitte auswählen</option>
+                  <option value="morning">Vormittags (9–12 Uhr)</option>
+                  <option value="afternoon">Nachmittags (12–17 Uhr)</option>
+                </select>
+                <p class="field-error" id="callbackTime-error" aria-live="polite"></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-step" id="insurance-interests">
+            <legend><span class="step-number">4</span> An welchen Versicherungssparten sind Sie interessiert? <span class="required-mark">*</span></legend>
+            <div class="product-options">
+              <label class="product-option"><input type="checkbox" name="products" value="car" /><span>Kfz-Versicherung</span></label>
+              <label class="product-option"><input type="checkbox" name="products" value="home" /><span>Haus &amp; Wohnen</span></label>
+              <label class="product-option"><input type="checkbox" name="products" value="liability" /><span>Haftpflicht</span></label>
+              <label class="product-option"><input type="checkbox" name="products" value="legal" /><span>Rechtsschutz</span></label>
+              <label class="product-option"><input type="checkbox" name="products" value="health" /><span>Gesundheit &amp; Pflege</span></label>
+              <label class="product-option"><input type="checkbox" name="products" value="other" /><span>Ein anderes Thema</span></label>
+            </div>
+            <p class="field-error choice-error" id="products-error" aria-live="polite"></p>
+          </fieldset>
+
+          <div class="privacy-consent">
+            <input id="privacyConsent" name="privacyConsent" type="checkbox" required aria-describedby="privacyConsent-error" />
+            <label for="privacyConsent">
+              Ich habe die <a href="https://www.devk.de/datenschutz/" target="_blank" rel="noopener noreferrer">Datenschutzhinweise</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung meiner Rückrufanfrage einverstanden. <span class="required-mark">*</span>
+            </label>
+            <p class="field-error" id="privacyConsent-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-footer">
+            <button class="submit-button" id="submit-button" type="submit">
+              Rückruf anfordern <span aria-hidden="true">→</span>
+            </button>
+            <p class="form-note"><span class="lock-icon" aria-hidden="true"></span> Sicher und vertraulich übermittelt</p>
+          </div>
+          <div class="form-status" id="form-status" role="status" aria-live="polite" tabindex="-1"></div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>DEVK Versicherungen</span>
+      <span>Persönlich. Verlässlich. Für Sie da.</span>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

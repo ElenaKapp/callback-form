@@ -1,0 +1,26 @@
+{
+  "name": "callback-form",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config frontend/vite.config.ts frontend",
+    "dev:backend": "wrangler dev --config backend/wrangler.toml --var FRONTEND_ORIGIN:http://localhost:5173",
+    "build": "npm run typecheck && npm run test && npm run build:frontend",
+    "build:frontend": "vite build --config frontend/vite.config.ts frontend",
+    "build:backend": "wrangler deploy --config backend/wrangler.toml --dry-run",
+    "deploy:backend": "wrangler deploy --config backend/wrangler.toml",
+    "typecheck:frontend": "tsc -p frontend/tsconfig.json",
+    "typecheck:backend": "tsc -p backend/tsconfig.json",
+    "typecheck": "npm run typecheck:frontend && npm run typecheck:backend",
+    "test": "vitest run --config vitest.config.ts"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261012.1",
+    "sass": "^1.105.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9",
+    "vitest": "^5.0.4",
+    "wrangler": "^4.149.0"
+  }
+}
